@@ -16,3 +16,11 @@ class Tanh:
         return out
     def parameters(self):
         return []
+
+class Softmax:
+    def __call__(self,x):
+        x=to_matrics(x)
+        out=x.sigmoid()
+        return out
+    def parameters(self):
+        return []

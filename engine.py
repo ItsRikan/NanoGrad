@@ -90,8 +90,8 @@ class Matrics:
     #     out._backward=_backward
     #     return out
                
-    def ReLU(self):
-        relu_matrics=np.maximum(self.matrics,0)
+    def ReLU(self,thershold:float=0):
+        relu_matrics=np.maximum(self.matrics,thershold)
         out=Matrics(relu_matrics,(self,))
         def _backward():
             set_grad(self,np.minimum(relu_matrics,1) * out.grad)
