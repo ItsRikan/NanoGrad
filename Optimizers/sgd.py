@@ -7,7 +7,7 @@ class SGD:
         self.params=params
         self.lr=learnning_rate
         self.momentum_decay=momentum_decay
-        self.velocity = np.array([np.ones_like(p.matrics) for p in self.params]) * initial_momentum
+        self.velocity = [np.ones_like(p.matrics) * initial_momentum for p in self.params] 
     def zero_grad(self,set_to_none:bool=False):
         if set_to_none:
             for p in self.params:

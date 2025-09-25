@@ -23,4 +23,4 @@ class Adam:
             if p.grad is not None:
                 self.velocity[i] = self.velocity[i] * self.velocity_decay + (1-self.velocity_decay) * np.power(p.grad,2)
                 self.momentum[i] = self.momentum[i] * self.momentum_decay + (1-self.momentum_decay) * p.grad
-                p.matrics -= self.lr * self.momentum / np.sqrt(self.velocity + self.eps)
+                p.matrics -= self.lr * self.momentum[i] / np.sqrt(self.velocity[i] + self.eps)

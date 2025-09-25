@@ -7,7 +7,7 @@ class Matrics:
         self.shape=self.matrics.shape
         self._backward= lambda:None
         self.child=child
-        self._backward = lambda x: None
+        self._backward = lambda: None
     def to_list(self):
         return self.matrics.tolist()
     def to_matrics(self,matrics):
@@ -105,7 +105,9 @@ class Matrics:
         relu_matrics=np.maximum(self.matrics,self.matrics*thershold)
         out=Matrics(relu_matrics,(self,))
         def _backward():
-            set_grad(self,np.where(relu_matrics>0,1,thershold) * out.grad)       
+            set_grad(self,np.where(relu_matrics>0,1,thershold) * out.grad)    
+        out._backward=_backward
+        return out   
     def exp(self):
         out = Matrics(np.exp(self.matrics),(self,))
         def _backward():
@@ -127,8 +129,9 @@ class Matrics:
                 visited.add(parent)
         create_topo(self)
         self.grad=np.ones_like(self.matrics)
-        for node in reversed(topology):
+        for node in reversed(topology): 
             node._backward()
+                
 
     def __neg__(self):
         return -1 * self
