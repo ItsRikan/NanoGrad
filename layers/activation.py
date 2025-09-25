@@ -8,7 +8,20 @@ class ReLU:
         return out
     def parameters(self):
         return []
-
+class LeakyReLU:
+    def __call__(self,x):
+        x=to_matrics(x)
+        out=x.ReLU(thershold=0.01)
+        return out
+    def parameters(self):
+        return []
+class PReLU:
+    def __call__(self,x,alpha:float=0.01):
+        x=to_matrics(x)
+        out=x.ReLU(thershold=alpha)
+        return out
+    def parameters(self):
+        return []
 class Tanh:
     def __call__(self,x):
         x=to_matrics(x)
@@ -17,10 +30,17 @@ class Tanh:
     def parameters(self):
         return []
 
-class Softmax:
+class Sigmoid:
     def __call__(self,x):
         x=to_matrics(x)
         out=x.sigmoid()
+        return out
+    def parameters(self):
+        return []
+class Softmax:
+    def __call__(self,x):
+        x=to_matrics(x)
+        out=x.softmax()
         return out
     def parameters(self):
         return []

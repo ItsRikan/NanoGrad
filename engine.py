@@ -80,22 +80,25 @@ class Matrics:
             set_grad(self,sig_matrics * (1-sig_matrics) * out.grad)
         out._backward=_backward
         return out
-    # def softmax(self,dim:int):
-    #     exp=np.exp(self.matrics)
-    #     s=exp.sum(dim,keepdims=True)
-    #     soft_matrics=exp/s
-    #     out=Matrics(soft_matrics,(self,))
-    #     def _backward():
-    #         self.grad += Matrics.__fix_dim__(self.grad,)
-    #     out._backward=_backward
-    #     return out
+    def softmax(self,dim:int=-1):
+        e_x=np.exp(self.matrics-np.max(self.matrics,axis=dim,keepdims=True))
+        soft_matrics=e_x / e_x.sum(axis=dim,keepdims=True)
+        out=Matrics(soft_matrics,(self,))
+        def _backward():
+            s=out.matrics
+            upstream_grad=out.grad
+            s_spread = s[...,np.newaxis]
+            grad = s * (upstream_grad - (upstream_grad*s).sum(axis=dim,keepdims=True))
+            set_grad(self,grad)
+        out._backward=_backward
+        return out
                
     def ReLU(self,thershold:float=0):
-        relu_matrics=np.maximum(self.matrics,thershold)
+        assert 0<=thershold<=1 , "thershold can't be greater than 1 or less than 0"
+        relu_matrics=np.maximum(self.matrics,self.matrics*thershold)
         out=Matrics(relu_matrics,(self,))
         def _backward():
-            set_grad(self,np.minimum(relu_matrics,1) * out.grad)
-            
+            set_grad(self,np.where(relu_matrics>0,1,thershold) * out.grad)       
     def exp(self):
         out = Matrics(np.exp(self.matrics),(self,))
         def _backward():
