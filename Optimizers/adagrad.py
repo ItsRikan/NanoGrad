@@ -4,7 +4,7 @@ class AdaGrad:
     def __init__(self,params:list=[],learnning_rate:float=0.01,initial_velocity:float=0,eps:float=1e-3,velocity_decay:int=0):
         self.params = params
         self.eps=eps
-        self.velocity = np.array([np.ones_like(p.matrics) for p in self.params]) * initial_velocity
+        self.velocity = [np.ones_like(p.matrics) * initial_velocity for p in self.params] 
         self.lr=learnning_rate
         assert 0<=velocity_decay<=1 ,"velocity decay can't be less than 0 or greater than 1"
         self.bitta=velocity_decay

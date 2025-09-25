@@ -7,6 +7,7 @@ class Matrics:
         self.shape=self.matrics.shape
         self._backward= lambda:None
         self.child=child
+        self._backward = lambda x: None
     def to_list(self):
         return self.matrics.tolist()
     def to_matrics(self,matrics):
@@ -47,6 +48,12 @@ class Matrics:
         n = np.prod(self.shape) if dim is None else self.shape[dim]
         diff = self-mean
         out = (diff * diff).mean(dim,keepdims)
+        return out
+    def log(self):
+        out=Matrics(np.log(self.matrics),(self,))
+        def _backward():
+            set_grad(self,(1/self.matrics) * out.grad )
+        out._backward = _backward
         return out
     def __matmul__(self,other):
         other=self.to_matrics(other)

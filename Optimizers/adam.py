@@ -5,8 +5,8 @@ class Adam:
     def __init__(self,params:list=[],learnning_rate:float=0.01,eps:float=1e-3,momentum_decay:float=0.9,initial_momentum:float=0,velocity_decay:float=0.9,initial_velocity:float=0):
         self.params=params
         self.lr=learnning_rate
-        self.momentum = np.array([np.ones_like(p.matrics) for p in self.params]) * initial_momentum
-        self.velocity = np.ones_like(self.momentum) * initial_momentum
+        self.momentum = [np.ones_like(p.matrics)* initial_momentum for p in self.params] 
+        self.velocity = [np.ones_like(p.matrics)* initial_velocity for p in self.params] 
         assert 0<=momentum_decay<=1 and 0<=velocity_decay<=1, "decays can't be less than 0 and greater than 1"
         self.momentum_decay=momentum_decay
         self.velocity_decay=velocity_decay

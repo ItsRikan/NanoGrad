@@ -38,9 +38,11 @@ class Sigmoid:
     def parameters(self):
         return []
 class Softmax:
+    def __init__(self,dim:int=-1):
+        self.dim=dim
     def __call__(self,x):
         x=to_matrics(x)
-        out=x.softmax()
+        out=x.softmax(self.dim)
         return out
     def parameters(self):
         return []
