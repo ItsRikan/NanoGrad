@@ -6,5 +6,10 @@ def mean_square_error(y_true:Matrics,y_pred:Matrics):
 
 def binary_crossentropy(y_true:Matrics,y_pred:Matrics):
     loss= (y_true * y_pred.log()) + ((1-y_true) * (1-y_pred).log())
-    loss=loss.mean()
+    loss=loss.mean(keepdims=True)
+    return loss
+
+def mean_absolute_error(y_true:Matrics,y_pred:Matrics):
+    loss= (y_pred-y_true).abs()
+    loss=loss.mean(keepdims=True)
     return loss

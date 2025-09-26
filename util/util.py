@@ -4,6 +4,10 @@ def fix_dim(match_shape:tuple,out:np.ndarray)->np.ndarray:
     out_shape=out.shape
     if match_shape==out_shape:
         return out
+    elif np.prod(match_shape)==1:
+        return out.sum().reshape(match_shape)
+    elif np.prod(out_shape)==1:
+        return np.tile(out,match_shape)
     elif sum(out_shape)>sum(match_shape):
         if len(match_shape)==1:
             if match_shape[0]==out_shape[1]:

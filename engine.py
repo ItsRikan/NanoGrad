@@ -5,9 +5,10 @@ class Matrics:
         self.matrics=np.array(matrics,dtype=np.float32)
         self.grad=None
         self.shape=self.matrics.shape
-        self._backward= lambda:None
         self.child=child
-        self._backward = lambda: None
+        self._backward = self._default_backward
+    def _default_backward(self):
+        pass
     def to_list(self):
         return self.matrics.tolist()
     def to_matrics(self,matrics):
@@ -70,6 +71,12 @@ class Matrics:
         def _backward():
             set_grad(self,power * np.power(self.matrics,power-1) * out.grad)
            
+        out._backward=_backward
+        return out
+    def abs(self):
+        out=Matrics(np.absolute(self.matrics),(self,))
+        def _backward():
+            set_grad(self,np.where(self.matrics>0,1,-1))
         out._backward=_backward
         return out
     def tanh(self):
@@ -139,7 +146,7 @@ class Matrics:
         return self * other
     def __sub__(self,other):
         return self + (-other)
-    def __rsub__(self,otehr):
+    def __rsub__(self,other):
         return other +(-self)
     def __radd__(self,other):
         return self + other
